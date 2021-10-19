@@ -80,8 +80,20 @@ sys_sleep(void)
 int
 sys_pgaccess(void)
 {
-  // lab pgtbl: your code here.
-  return 0;
+
+  uint64 pageaddr;
+  int n;
+  uint64 structaddr;
+  if (argaddr(0, &pageaddr) < 0) {
+    return -1;
+  }
+  if (argint(1, &n) < 0) {
+    return -1;
+  }
+  if (argaddr(2, &structaddr) < 0) {
+    return -1;
+  }
+  return pgacess(pageaddr, n, structaddr);
 }
 #endif
 

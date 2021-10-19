@@ -683,3 +683,21 @@ procdump(void)
     printf("\n");
   }
 }
+
+int pgacess(uint64 pageaddr, int n, uint64 strudtaddr) {
+
+  struct proc *p = myproc();
+  int bufsize = (n - 1) / 8 + 1;
+  char buf[bufsize];
+  memset(buf, 0, sizeof(buf));
+  for (int i = 0; i < n; i++) {
+    pte_t* pte = walk(p->pagetable, pageaddr + i * PGSIZE, 0);
+    if (pte && (*pte & PTE_A)) {
+        buf[i / 8] = buf[i / 8 ] | (1 << (i % 8));
+        *pte = *pte ^ PTE_A;
+    }
+  }
+
+  copyout(p->pagetable, strudtaddr, buf, bufsize);
+  return 0;
+}
