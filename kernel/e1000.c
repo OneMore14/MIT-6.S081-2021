@@ -151,11 +151,12 @@ e1000_recv(void)
   memset(&rx_ring[ring_index], 0, sizeof(rx_ring[ring_index]));
   rx_ring[ring_index].addr = (uint64)(rx_mbufs[ring_index]->head);
 
+  net_rx(old);
   regs[E1000_RDT] = ring_index;
 
 
   // release(&e1000_lock);
-  net_rx(old);
+
   }
 }
 
